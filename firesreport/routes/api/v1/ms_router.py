@@ -59,13 +59,13 @@ def do_reports():
     values = "'"+ "','".join(values)+"'"
 
     payload = {
-        'f':'json',
-        'spatialRelationship':'esriSpatialRelIntersects',
-        'outStatistics':"[{'onStatisticField':'ACQ_DATE','outStatisticFieldName':'Count','statisticType':'count'}]",
-        'returnGeometry':False,
-        'where':column +' in ('+values+') AND ACQ_DATE >= date\''+ period_from +'\' AND ACQ_DATE <= date\'' + period_to + '\'',
-        'groupByFieldsForStatistics':['ACQ_DATE'],
-        'orderByFields':['ACQ_DATE ASC']
+        'f': 'json',
+        'spatialRelationship': 'esriSpatialRelIntersects',
+        'outStatistics': "[{'onStatisticField':'ACQ_DATE','outStatisticFieldName':'Count','statisticType':'count'}]",
+        'returnGeometry': False,
+        'where': column +' in ('+values+') AND ACQ_DATE >= date\''+ period_from +'\' AND ACQ_DATE <= date\'' + period_to + '\'',
+        'groupByFieldsForStatistics': ['ACQ_DATE'],
+        'orderByFields': ['ACQ_DATE ASC']
     }
 
     try:
