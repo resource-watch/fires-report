@@ -3,9 +3,9 @@ import json
 import logging
 
 from flask import Flask
-from ms.config import settings
-from ms.routes.api.v1 import endpoints
-from ms.utils.files import load_config_json
+from firesreport.config import settings
+from firesreport.routes.api.v1 import endpoints
+from firesreport.utils.files import load_config_json
 import CTRegisterMicroserviceFlask
 
 # Logging
