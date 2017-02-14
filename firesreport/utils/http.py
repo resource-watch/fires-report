@@ -20,9 +20,27 @@ def request_to_microservice(config):
                 data=json.dumps(config.get('body'))
             )
         prepped = session.prepare_request(request)
-    
+
         response = session.send(prepped)
     except Exception as error:
        raise error
 
     return response.json()
+
+
+def request_to_url(config):
+    try:
+        session = Session()
+        request = Request(
+                method=config.get('method'),
+                url=config.get('url'),
+                headers={
+                    'content-type': 'application/json'
+                },
+                data=json.dumps(config.get('body'))
+            )
+        prepped = session.prepare_request(request)
+
+        response = session.send(prepped)
+    except Exception as error:
+       raise error
