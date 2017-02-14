@@ -56,27 +56,20 @@ def do_reports():
         column = 'PROVINCE'
         values = provinces.split(',')
 
-    #values = map(lambda x: '\'' + str(x) + '\'', values)
     values = "'"+ "','".join(values)+"'"
-
-    logging.debug(values)
 
     payload = {
         'f':'json',
         'spatialRelationship':'esriSpatialRelIntersects',
-        'where':column +' in ('+values+') ACQ_DATE >= '+ period_from +' AND ACQ_DATE <= ' + period_to,
+        'outStatistics':"[{'onStatisticField':'ACQ_DATE','outStatisticFieldName':'Count','statisticType':'count'}]",
         'returnGeometry':False,
+        'where':column +' in ('+values+') AND ACQ_DATE >= date\''+ period_from +'\' AND ACQ_DATE <= date\'' + period_to + '\'',
         'groupByFieldsForStatistics':['ACQ_DATE'],
-        'orderByFields':['ACQ_DATE ASC'],
-        'outStatistics':[{
-            'onStatisticField':'ACQ_DATE',
-            'outStatisticFieldName':'Count',
-            'statisticType':'count'
-        }]
+        'orderByFields':['ACQ_DATE ASC']
     }
 
     try:
-        response = requests.get('http://gis-potico.wri.org/arcgis/rest/services/Fires/FIRMS_ASEAN/MapServer/0', params=payload)
+        response = requests.get('http://gis-potico.wri.org/arcgis/rest/services/Fires/FIRMS_ASEAN/MapServer/0/query', params=payload)
     except Error:
         return jsonify({'errors': [{
             'status': '500',
@@ -84,4 +77,11 @@ def do_reports():
             }]
         }), 500
 
-    return jsonify(response.json()), 200
+    response = response.json()
+    r = {
+        'id': None,
+        'type': 'fires',
+        'attributes': response.get('features')
+    }
+
+    return jsonify(r), 200
